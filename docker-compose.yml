@@ -1,0 +1,17 @@
+version: "2"
+services: 
+  gocd-server:
+    image: gocd/gocd-server:latest
+    container_name: gocd-server
+    ports:
+      - "8153:8153"
+      - "8154:8154"
+  gocd-agent:
+    image: gocd-agent:latest
+    build:
+      context: ./gocd/agent/
+    container_name: gocd-agent
+    links:
+      - gocd-server
+    environment:
+      - GO_SERVER_URL=https://gocd-server:8154/go
